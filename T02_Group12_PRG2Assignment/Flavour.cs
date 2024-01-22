@@ -22,7 +22,7 @@ namespace T02_Group12_PRG2Assignment
 
         public override string ToString()
         {
-            return $"Flavour: {name}\nPremium: {isPremium}\nQuantity: {quantity}";
+            return $"Flavour: {Name}\nPremium: {IsPremium}\nQuantity: {Quantity}";
         }
 
     }

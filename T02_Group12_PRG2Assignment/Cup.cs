@@ -9,13 +9,13 @@ namespace T02_Group12_PRG2Assignment
 {
     public class Cup : IceCream
     {
-        public Cup(string option, int scoops, , List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings) { }
+        public Cup(string option, int scoops, List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings) { }
 
         public new double CalculatePrice()
         {
             double basePrice = base.CalculatePrice();
 
-            if (option.ToLower() == "waffle")
+            if (Option.ToLower() == "waffle")
             {
                 basePrice += 3.00;
             }

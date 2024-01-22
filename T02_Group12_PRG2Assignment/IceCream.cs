@@ -27,20 +27,20 @@ namespace T02_Group12_PRG2Assignment
         {
             double basePrice = 0.0;
 
-            if (option.ToLower() == "single")
+            if (Option.ToLower() == "single")
             {
                 basePrice = 4.00;
             }
-            else if (option.ToLower() == "double")
+            else if (Option.ToLower() == "double")
             {
                 basePrice = 5.50;
             }
-            else if (option.ToLower() == "triple")
+            else if (Option.ToLower() == "triple")
             {
                 basePrice = 6.50;
             }
 
-            foreach (var flavour in flavours)
+            foreach (var flavour in Flavours)
             {
                 if (flavour.IsPremium)
                 {
@@ -48,14 +48,14 @@ namespace T02_Group12_PRG2Assignment
                 }
             }
 
-            basePrice += toppings.Count;
+            basePrice += Toppings.Count;
 
             return basePrice;
         }
 
         public override string ToString()
         {
-            return $"Ice Cream Option: {option}\nScoops: {scoops}\nPrice: {CalculatePrice()}";
+            return $"Ice Cream Option: {Option}\nScoops: {Scoops}\nPrice: {CalculatePrice()}";
         }
 
     }

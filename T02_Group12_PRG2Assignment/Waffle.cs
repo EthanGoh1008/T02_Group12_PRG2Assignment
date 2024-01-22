@@ -21,7 +21,7 @@ namespace T02_Group12_PRG2Assignment
             double basePrice = base.CalculatePrice();
 
             // Add additional cost for choosing a specific waffle flavor
-            if (!string.IsNullOrEmpty(waffleFlavour))
+            if (!string.IsNullOrEmpty(WaffleFlavour))
             {
                 basePrice += 3.00;
             }
@@ -31,7 +31,7 @@ namespace T02_Group12_PRG2Assignment
 
         public override string ToString()
         {
-            string waffleInfo = string.IsNullOrEmpty(waffleFlavour) ? "Original Waffle" : $"{waffleFlavour} Waffle";
+            string waffleInfo = string.IsNullOrEmpty(WaffleFlavour) ? "Original Waffle" : $"{WaffleFlavour} Waffle";
             return $"{base.ToString()}\nWaffle Type: {waffleInfo}";
         }
     }

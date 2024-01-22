@@ -10,7 +10,7 @@ namespace T02_Group12_PRG2Assignment
     {
         public int Id {  get; set; }
         public DateTime TimeRecieved {  get; set; }
-        public DateTime? TimeFufilled { get; set; }
+        public DateTime TimeFufilled { get; set; }
         public List<IceCream> IceCreamList { get; set; }
 
         public Order(int id, DateTime timeRecieved)
@@ -19,7 +19,7 @@ namespace T02_Group12_PRG2Assignment
             TimeRecieved = timeRecieved;
         }
         
-        public void ModifyIceCream(int index, Icecream modifiedIceCream)
+        public void ModifyIceCream(int index, IceCream modifiedIceCream)
         {
             if (index >=0 && index < IceCreamList.Count)
             {
@@ -40,7 +40,7 @@ namespace T02_Group12_PRG2Assignment
             }
         }
 
-        public double CalculateToatl()
+        public double CalculateTotal()
         {
             double total = 0;
             foreach (var item in IceCreamList)
