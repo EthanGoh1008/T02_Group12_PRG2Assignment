@@ -39,11 +39,12 @@ void AddCus()
 
 void DisplayCus()
 {
+    Console.WriteLine($"{"Name",-20}{"Member ID",-10}{"Date of Birth",-15}");
+    Console.WriteLine(new string('-', 45));
+
     foreach (var customer in CusList)
     {
-        Console.WriteLine($"Name: {customer.Name}");
-        Console.WriteLine($"Member ID: {customer.MemberId}");
-        Console.WriteLine($"Date of Birth: {customer.Dob.ToShortDateString()}");
+        Console.WriteLine($"{customer.Name,-20}{customer.MemberId,-10}{customer.Dob.ToShortDateString(),-15}");
     }
 }
 
