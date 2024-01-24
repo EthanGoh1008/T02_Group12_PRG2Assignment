@@ -1,5 +1,6 @@
 ﻿using T02_Group12_PRG2Assignment;
-
+using System.IO;
+using System;
 void DisplayMenu()
 {
     Console.WriteLine("---------------- M E N U --------------------");
@@ -12,33 +13,63 @@ void DisplayMenu()
     Console.WriteLine("[0] Exit");
     Console.WriteLine("---------------------------------------------");
 }
-void ListOrder()
+void AddCus()
 {
-    int header = 14;
-    string orderfile = "order.csv";
+    List<Customer> CusList = new List<Customer>();
+    string orderfile = "customers.csv";
     using (StreamReader sr = new StreamReader(orderfile))
     {
         string headerLine = sr.ReadLine();
-        while(!sr.EndOfStream)
+        while (!sr.EndOfStream)
         {
             string dataRow = sr.ReadLine();
+            string[] fields = dataRow.Split(',');
+
+            string name = fields[0];
+            int memid = int.Parse(fields[1]);
+            DateTime db = DateTime.Parse(fields[2]);
+
+            Customer customer = new Customer(name,memid,db);
+
+            CusList.Add(customer);
         }
     }
+    foreach (var customer in CusList)
+    {
+        Console.WriteLine($"Name: {customer.Name}");
+        Console.WriteLine($"Member ID: {customer.MemberId}");
+        Console.WriteLine($"Date of Birth: {customer.Dob.ToShortDateString()}");
+    }
+}
+void ListOrder()
+{
+    int header = 14;
+    string orderfile = "customers.csv";
+        using (StreamReader sr = new StreamReader(orderfile))
+        {
+            string headerLine = sr.ReadLine();
+            while (!sr.EndOfStream)
+            {
+                string dataRow = sr.ReadLine();
+                Console.WriteLine(dataRow);
+            }
+        }
+
 }
 string choice;
 while (true)
 {
     DisplayMenu();
-    Console.WriteLine("Enter your option:");
+    Console.Write("Enter your option:");
     choice = Console.ReadLine();
     if (choice == "0") break;
     else if (choice == "1")
     {
-
+        AddCus();
     }
     else if (choice == "2")
     {
-
+        ListOrder();
     }
     else if (choice == "3")
     {
