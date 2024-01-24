@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace T02_Group12_PRG2Assignment
 {
-    public class Order
+    class Order
     {
         public int Id {  get; set; }
         public DateTime TimeRecieved {  get; set; }
-        public DateTime TimeFufilled { get; set; }
-        public List<IceCream> IceCreamList { get; set; }
-
+        public DateTime TimeFulfilled { get; set; }
+        public List<IceCream> IceCreamList { get; set; } = new List<IceCream>();
+        public Order() { }
         public Order(int id, DateTime timeRecieved)
         {
             Id = id;
@@ -43,16 +43,13 @@ namespace T02_Group12_PRG2Assignment
         public double CalculateTotal()
         {
             double total = 0;
-            foreach (var item in IceCreamList)
-            {
-                total += IceCreamList.Price;
-            }
+
             return total;
         }
 
         public override string ToString()
         {
-            return $"Order: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}, Total: {CalculateTotal()}";
+            return $"Order: {Id}, Time Received: {TimeRecieved}, Time Fulfilled: {TimeFulfilled}, Total: {CalculateTotal()}";
         }
 
     }

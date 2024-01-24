@@ -7,20 +7,28 @@ using System.Threading.Tasks;
 
 namespace T02_Group12_PRG2Assignment
 {
-    public class Cup : IceCream
+    class Cup : IceCream
     {
         public Cup(string option, int scoops, List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings) { }
 
-        public new double CalculatePrice()
+        public override void CalculatePrice(double basePrice)
         {
-            double basePrice = base.CalculatePrice();
+            // Call the base class CalculatePrice() to get the base price
+            basePrice = 4.00;
 
-            if (Option.ToLower() == "waffle")
+            // Add additional cost for chocolate-dipped cone
+
+            if (Scoops == 1)
             {
-                basePrice += 3.00;
             }
-
-            return basePrice;
+            else if (Scoops == 2)
+            {
+                basePrice += 1.5;
+            }
+            else if (Scoops == 3)
+            {
+                basePrice += 2.5;
+            }
         }
         public override string ToString()
         {

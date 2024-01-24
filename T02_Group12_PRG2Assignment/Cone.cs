@@ -6,27 +6,38 @@ using System.Threading.Tasks;
 
 namespace T02_Group12_PRG2Assignment
 {
-    public class Cone : IceCream
+    class Cone : IceCream
     {
         private bool Dipped;
 
-        public Cone(string option, bool dipped, int scoops, List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings)
+        public Cone(string option, int scoops, List<Flavour> flavours, List<Topping> toppings, bool dipped) : base(option, scoops, flavours, toppings)
         {
             Dipped = dipped;
         }
 
-        public new double CalculatePrice()
+        public override void CalculatePrice(double basePrice)
         {
             // Call the base class CalculatePrice() to get the base price
-            double basePrice = base.CalculatePrice();
-
-            // Add additional cost for chocolate-dipped cone
+            basePrice = 4.00;
             if (Dipped)
             {
-                basePrice += 2.00;
+                basePrice += 2;
+            }
+            // Add additional cost for chocolate-dipped cone
+
+            if ( Scoops == 1)
+            {
+            }
+            else if (Scoops == 2)
+            {
+                basePrice += 1.5;
+            }
+            else if (Scoops == 3)
+            {
+                basePrice += 2.5;
             }
 
-            return basePrice;
+
         }
         public override string ToString()
         {

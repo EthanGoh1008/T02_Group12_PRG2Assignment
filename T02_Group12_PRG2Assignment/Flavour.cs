@@ -9,9 +9,9 @@ namespace T02_Group12_PRG2Assignment
 {
     public class Flavour
     {
-        private string Name;
-        private bool IsPremium;
-        private int Quantity;
+        public string Name { get; set; }
+        public bool IsPremium { get; set; }
+        public int Quantity { get; set; }
 
         public Flavour(string name, bool isPremium, int quantity)
         {

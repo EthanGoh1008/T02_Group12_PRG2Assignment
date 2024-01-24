@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace T02_Group12_PRG2Assignment
 {
-    public class Waffle : IceCream
+    class Waffle : IceCream
     {
         private string WaffleFlavour;
 
@@ -14,19 +14,35 @@ namespace T02_Group12_PRG2Assignment
         {
             WaffleFlavour = waffleFlavour;
         }
+        /*ask user for waffleflavour by option 1,2,3 
+        use if user say yes to add a waffleflavour.
+        option 1 = Red velvet
+        Option 2 = Charcoal
+        option 3 = Pandan Waffle
 
-        public new double CalculatePrice()
+        */
+        public override void CalculatePrice(double baseprice)
         {
             // Call the base class CalculatePrice() to get the base price
-            double basePrice = base.CalculatePrice();
-
-            // Add additional cost for choosing a specific waffle flavor
-            if (!string.IsNullOrEmpty(WaffleFlavour))
+            double basePrice = 7.00;
+            if (WaffleFlavour != null)
             {
-                basePrice += 3.00;
+                baseprice += 3;
+            }
+            // Add additional cost for chocolate-dipped cone
+
+            if (Scoops == 1)
+            {
+            }
+            else if (Scoops == 2)
+            {
+                basePrice += 1.5;
+            }
+            else if (Scoops == 3)
+            {
+                basePrice += 2.5;
             }
 
-            return basePrice;
         }
 
         public override string ToString()

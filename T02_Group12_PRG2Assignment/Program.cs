@@ -12,7 +12,19 @@ void DisplayMenu()
     Console.WriteLine("[0] Exit");
     Console.WriteLine("---------------------------------------------");
 }
-
+void ListOrder()
+{
+    int header = 14;
+    string orderfile = "order.csv";
+    using (StreamReader sr = new StreamReader(orderfile))
+    {
+        string headerLine = sr.ReadLine();
+        while(!sr.EndOfStream)
+        {
+            string dataRow = sr.ReadLine();
+        }
+    }
+}
 string choice;
 while (true)
 {
