@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace T02_Group12_PRG2Assignment
 {
-    internal class Order
+    public class Order
     {
         public int Id {  get; set; }
         public DateTime TimeRecieved {  get; set; }
