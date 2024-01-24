@@ -2,6 +2,7 @@
 using System.IO;
 using System;
 List<Customer> CusList = new List<Customer>();
+
 void DisplayMenu()
 {
     Console.WriteLine("---------------- M E N U --------------------");
@@ -15,6 +16,16 @@ void DisplayMenu()
     Console.WriteLine("---------------------------------------------");
 }
 
+void DisplayCus()
+{
+        foreach (var customer in CusList)
+        {
+            Console.WriteLine($"Name: {customer.Name}");
+            Console.WriteLine($"Member ID: {customer.MemberId}");
+            Console.WriteLine($"Date of Birth: {customer.Dob.ToShortDateString()}");
+            Console.WriteLine();
+        }
+}
 void AddCus()
 {
     string orderfile = "customers.csv";
@@ -37,21 +48,10 @@ void AddCus()
     }
 }
 
-void DisplayCus()
-{
-    Console.WriteLine($"{"Name",-20}{"Member ID",-10}{"Date of Birth",-15}");
-    Console.WriteLine(new string('-', 45));
-
-    foreach (var customer in CusList)
-    {
-        Console.WriteLine($"{customer.Name,-20}{customer.MemberId,-10}{customer.Dob.ToShortDateString(),-15}");
-    }
-}
-
 void ListOrder()
 {
     int header = 14;
-    string orderfile = "customers.csv";
+    string orderfile = "orders.csv";
         using (StreamReader sr = new StreamReader(orderfile))
         {
             string headerLine = sr.ReadLine();
