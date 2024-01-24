@@ -13,13 +13,14 @@ namespace T02_Group12_PRG2Assignment
         public DateTime Dob { get; set; }
         public Order CurrentOrder { get; set; }
         public List<Order> OrderHistory { get; set; } = new List<Order>();
-        public PointCard Rewards { get; set; }
+        public PointCard Rewards { get; set; } 
         public Customer() { }
         public Customer(string name, int memberId, DateTime dob)
         {
             Name = name;
             MemberId = memberId;
             Dob = dob;
+
         }
 
         public void MakeOrder(Order mo)

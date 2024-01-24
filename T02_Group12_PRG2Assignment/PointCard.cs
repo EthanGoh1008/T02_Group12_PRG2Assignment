@@ -12,10 +12,11 @@ namespace T02_Group12_PRG2Assignment
         public int PunchCard {  get; set; }
         public string Tier {  get; set; }
 
-        public PointCard(int points, int punchcard)
+        public PointCard(int points, int punchcard,string status)
         {
             Points = points;
             PunchCard = punchcard;
+            Tier = status;
         }
        
         public void AddPoints(int points)
