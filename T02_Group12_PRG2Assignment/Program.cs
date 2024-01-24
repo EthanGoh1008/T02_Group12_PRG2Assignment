@@ -1,6 +1,8 @@
 ﻿using T02_Group12_PRG2Assignment;
 using System.IO;
 using System;
+List<Customer> CusList = new List<Customer>();
+
 void DisplayMenu()
 {
     Console.WriteLine("---------------- M E N U --------------------");
@@ -13,9 +15,19 @@ void DisplayMenu()
     Console.WriteLine("[0] Exit");
     Console.WriteLine("---------------------------------------------");
 }
+
+void DisplayCus()
+{
+        foreach (var customer in CusList)
+        {
+            Console.WriteLine($"Name: {customer.Name}");
+            Console.WriteLine($"Member ID: {customer.MemberId}");
+            Console.WriteLine($"Date of Birth: {customer.Dob.ToShortDateString()}");
+            Console.WriteLine();
+        }
+}
 void AddCus()
 {
-    List<Customer> CusList = new List<Customer>();
     string orderfile = "customers.csv";
     using (StreamReader sr = new StreamReader(orderfile))
     {
@@ -34,17 +46,11 @@ void AddCus()
             CusList.Add(customer);
         }
     }
-    foreach (var customer in CusList)
-    {
-        Console.WriteLine($"Name: {customer.Name}");
-        Console.WriteLine($"Member ID: {customer.MemberId}");
-        Console.WriteLine($"Date of Birth: {customer.Dob.ToShortDateString()}");
-    }
 }
 void ListOrder()
 {
     int header = 14;
-    string orderfile = "customers.csv";
+    string orderfile = "orders.csv";
         using (StreamReader sr = new StreamReader(orderfile))
         {
             string headerLine = sr.ReadLine();
@@ -60,12 +66,13 @@ string choice;
 while (true)
 {
     DisplayMenu();
+    AddCus();
     Console.Write("Enter your option:");
     choice = Console.ReadLine();
     if (choice == "0") break;
     else if (choice == "1")
     {
-        AddCus();
+        DisplayCus();
     }
     else if (choice == "2")
     {
