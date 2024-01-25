@@ -141,3 +141,19 @@ while (true)
         Console.WriteLine("Invalid input");
     }
 }
+
+private string CalculateTier()
+{
+    if (Points >= 100)
+    {
+        return "Gold";
+    }
+    else if (Points >= 50)
+    {
+        return "Silver";
+    }
+    else
+    {
+        return "Ordinary";
+    }
+}

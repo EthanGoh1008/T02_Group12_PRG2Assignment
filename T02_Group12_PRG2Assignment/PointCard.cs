@@ -53,21 +53,7 @@ namespace T02_Group12_PRG2Assignment
             }
         }
 
-        private string CalculateTier()
-        {
-            if (Points >= 100)
-            {
-                return "Gold";
-            }
-            else if (Points >= 50)
-            {
-                return "Silver";
-            }
-            else
-            {
-                return "Ordinary";
-            }
-        }
+     
 
         public override string ToString()
         {
