@@ -5,7 +5,7 @@ List<Order> OrdList = new List<Order>();
 Queue<Order> regQueue = new Queue<Order>();
 Queue<Order> goldQueue = new Queue<Order>();
 List<Order> OrdHistory = new List<Order>();
-
+int ordID = 1;
 
 
 
@@ -341,6 +341,10 @@ void CreateCustomerOrder()
 
 void CreateIceCreamForOrder(Order order)
 {
+    order.Id = ordID;
+    order.TimeReceived = DateTime.Now;
+    order.TimeFulfilled = DateTime.MinValue;
+
     //which flavours are premium
     Dictionary<string, bool> premiumFlavor = new Dictionary<string, bool>
     {

@@ -50,7 +50,7 @@ namespace T02_Group12_PRG2Assignment
 
         public override string ToString()
         {
-            return $"Order: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}, Total: {CalculateTotal()}";
+            return $"Order: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}";
         }
 
     }
