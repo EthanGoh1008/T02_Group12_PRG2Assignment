@@ -274,6 +274,76 @@ void CheckQueue()
     }
 }
 
+void RegisterNewCustomer()
+{
+    Console.Write("Enter customer name: ");
+    string name = Console.ReadLine();
+
+    Console.Write("Enter customer ID number: ");
+    int memberId = Convert.ToInt32(Console.ReadLine());
+
+    Console.Write("Enter customer date of birth (MM/DD/YYYY): ");
+    DateTime dob = DateTime.Parse(Console.ReadLine());
+
+    Customer newCustomer = new Customer(name, memberId, dob);
+    newCustomer.Rewards = new PointCard(0, 0); // Assuming initial points and punch card are 0
+    CusList.Add(newCustomer);
+
+    // Append the customer information to the customers.csv file
+    AppendCustomerToFile(newCustomer);
+
+    Console.WriteLine($"Customer {newCustomer.Name} successfully registered!");
+}
+
+void AppendCustomerToFile(Customer customer)
+{
+    string customerfile = "customers.csv";
+    using (StreamWriter sw = new StreamWriter(customerfile, true))
+    {
+        string customerInfo = $"{customer.Name},{customer.MemberId},{customer.Dob},{customer.Rewards.Tier},{customer.Rewards.Points},{customer.Rewards.PunchCard}";
+        sw.WriteLine(customerInfo);
+    }
+}
+
+void CreateCustomerOrder()
+{
+    DisplayCus();
+
+    Console.Write("Select a customer (enter the number): ");
+    int selectedCustomerIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+    Customer selectedCustomer = CusList[selectedCustomerIndex];
+
+    Order newOrder = new Order();
+
+    do
+    {
+        CreateIceCreamForOrder(newOrder);
+
+        Console.Write("Add another ice cream to the order? (Y/N): ");
+    } while (Console.ReadLine().ToUpper() == "Y");
+
+    // Link the new order to the customer's current order
+    selectedCustomer.CurrentOrder = newOrder;
+
+    // Append the order to the appropriate queue
+    if (selectedCustomer.Rewards.Tier == "Gold")
+    {
+        goldQueue.Enqueue(newOrder);
+    }
+    else
+    {
+        regQueue.Enqueue(newOrder);
+    }
+
+    Console.WriteLine("Order has been made successfully!");
+}
+
+void CreateIceCreamForOrder(Order order)
+{
+
+}
+
 void OrderCSV()
 {
     string orderfile = "orders.csv";
@@ -325,11 +395,11 @@ while (true)
     }
     else if (choice == "3")
     {
-
+        RegisterNewCustomer();
     }
     else if (choice == "4")
     {
-
+        CreateCustomerOrder();
     }
     else if (choice == "5")
     {
