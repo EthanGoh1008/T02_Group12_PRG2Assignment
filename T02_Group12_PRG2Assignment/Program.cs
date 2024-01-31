@@ -6,12 +6,16 @@ Queue<Order> goldQueue = new Queue<Order>();
 List<Order> OrdHistory = new List<Order>();
 int ordID = 1;
 int cus = 0;
-
+//==========================================================
+// Student Number : S10262480
+// Student Name : Leong Kai Jie
+// Partner Name : Ethan Goh Junjia
+//==========================================================
 
 //function to run first
 OrderCSV();
 AddCus();
-orderistory();
+orderhistory();
 
 void DisplayMenu()
 {
@@ -25,7 +29,7 @@ void DisplayMenu()
     Console.WriteLine("[0] Exit");
     Console.WriteLine("---------------------------------------------");
 }
-void orderistory()
+void orderhistory()
 {
 
     // Mapping of premium flavors
@@ -148,19 +152,6 @@ void option5Cus()
         Console.WriteLine();
     }
 }
-/*void DisplayOrd()
-{
-
-    Console.WriteLine($"{"ID",-20}{"Time Received",-10}");
-    Console.WriteLine(new string('-', 45));
-
-    foreach (var order in OrdList)
-    {
-        Console.WriteLine($"{order.Id,-20}{order.TimeRecieved,-10}");
-        //Console.WriteLine(customer.Rewards.Tier);
-        Console.WriteLine();
-    }
-}*/
 void AddCus()
 {
     string customerfile = "customers.csv";
@@ -372,10 +363,13 @@ void CreateCustomerOrder()
         Customer selectedCustomer = CusList[selectedCustomerIndex];
 
         Order newOrder = new Order();
-
+        if (selectedCustomer.CurrentOrder != null)
+        {
+            selectedCustomer.OrderHistory.Add(selectedCustomer.CurrentOrder);
+        }
         do
         {
-            CreateIceCreamForOrder(newOrder);
+            CreateIceCreamForOrder(newOrder, selectedCustomer);
 
             Console.Write("Add another ice cream to the order? (Y/N): ");
         } while (Console.ReadLine().ToUpper() == "Y");
@@ -384,14 +378,7 @@ void CreateCustomerOrder()
         selectedCustomer.CurrentOrder = newOrder;
 
         // Append the order to the appropriate queue
-        if (selectedCustomer.Rewards.Tier == "Gold")
-        {
-            goldQueue.Enqueue(newOrder);
-        }
-        else
-        {
-            regQueue.Enqueue(newOrder);
-        }
+
 
         Console.WriteLine("Order has been made successfully!");
     }
@@ -399,9 +386,13 @@ void CreateCustomerOrder()
     {
         Console.WriteLine($"An error occurred: {ex.Message}, Please check the value entered");
     }
+    finally
+    {
+        ordID += 1;
+    }
 }
 
-void CreateIceCreamForOrder(Order order)
+void CreateIceCreamForOrder(Order order, Customer selected)
 {
     try
     {
@@ -499,15 +490,20 @@ void CreateIceCreamForOrder(Order order)
                 Console.WriteLine("Invalid option");
                 break;
         }
+        if (selected.Rewards.Tier == "Gold")
+        {
+            goldQueue.Enqueue(order);
+        }
+        else
+        {
+            regQueue.Enqueue(order);
+        }
     }
     catch (Exception ex)
     {
         Console.WriteLine($"An error occurred: {ex.Message}, Please check the value entered");
     }
-    finally
-    {
-        ordID += 1;
-    }
+
 }
 
 string GetToppingNameByIndex(int index)

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//==========================================================
+// Student Number : S10262480
+// Student Name : Leong Kai Jie
+// Partner Name : Ethan Goh Junjia
+//==========================================================
 namespace T02_Group12_PRG2Assignment
 {
     class Cone : IceCream
