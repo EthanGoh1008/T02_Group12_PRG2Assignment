@@ -1,11 +1,4 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
-//==========================================================
+﻿//==========================================================
 // Student Number : S10262480
 // Student Name : Leong Kai Jie
 // Partner Name : Ethan Goh Junjia
@@ -32,7 +25,7 @@ namespace T02_Group12_PRG2Assignment
 
         public override string ToString()
         {
-            return $"IceCream Option: {Option}\nScoops: {Scoops}";
+            return $"Ice Cream Option: {Option}\nScoops: {Scoops}";
         }
 
     }

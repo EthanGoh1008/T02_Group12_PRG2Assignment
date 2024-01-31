@@ -1,6 +1,5 @@
 ﻿using T02_Group12_PRG2Assignment;
 List<Customer> CusList = new List<Customer>();
-List<Order> OrdList = new List<Order>();
 Queue<Order> regQueue = new Queue<Order>();
 Queue<Order> goldQueue = new Queue<Order>();
 List<Order> OrdHistory = new List<Order>();
@@ -13,7 +12,6 @@ int cus = 0;
 //==========================================================
 
 //function to run first
-OrderCSV();
 AddCus();
 orderhistory();
 
@@ -31,7 +29,6 @@ void DisplayMenu()
 }
 void orderhistory()
 {
-
     // Mapping of premium flavors
     Dictionary<string, bool> premiumFlavor = new Dictionary<string, bool>
     {
@@ -130,19 +127,6 @@ void DisplayCus()
 
     Console.WriteLine($"{"Name",-20}{"Member ID",-10}{"Date of Birth",-15}");
     Console.WriteLine(new string('-', 45));
-
-    foreach (var customer in CusList)
-    {
-        Console.WriteLine($"{customer.Name,-20}{customer.MemberId,-10}{customer.Dob.ToShortDateString(),-15}");
-        //Console.WriteLine(customer.Rewards.Tier);
-        Console.WriteLine();
-    }
-}
-void option5Cus()
-{
-
-    Console.WriteLine($"{"Name",-20}{"Member ID",-10}{"Date of Birth",-15}");
-    Console.WriteLine(new string('-', 45));
     int i = 0;
     foreach (var customer in CusList)
     {
@@ -152,6 +136,7 @@ void option5Cus()
         Console.WriteLine();
     }
 }
+
 void AddCus()
 {
     string customerfile = "customers.csv";
@@ -180,7 +165,7 @@ void AddCus()
 void Option5()
 {
 
-    option5Cus();
+    DisplayCus();
     try
     {
         Console.Write("Please select a Customer: ");
@@ -279,6 +264,51 @@ void Option5()
         foreach (var item in CusList)
         {
             item.OrderHistory.Clear();
+        }
+    }
+}
+void displaycurrent(Customer sel)
+{
+    int i = 1;
+    if (sel.CurrentOrder != null)
+    {
+        Console.WriteLine("Current Order:");
+
+        Order currentOrder = sel.CurrentOrder;
+
+        // Iterate over the ice creams within the current order
+        foreach (var iceCream in currentOrder.IceCreamList)
+        {
+            // Print Order details
+            Console.Write("[i]");
+            Console.Write("***"); // Separator between ice creams
+            Console.Write($"Order ID:{currentOrder.Id} ");
+            Console.Write($"Time Received:{currentOrder.TimeReceived,-22} ");
+            Console.Write($"Time Fulfilled:{currentOrder.TimeFulfilled,-22} ");
+
+            // Print Ice Cream details
+            Console.Write("Ice Creams:");
+            Console.Write($"{iceCream.Option,-8}");
+            Console.Write("Scoops:");
+            Console.Write($"{iceCream.Scoops,-5}");
+
+            // Print flavors
+            Console.Write("Flavours: ");
+            foreach (var flavour in iceCream.Flavours)
+            {
+                Console.Write($"{flavour.Name,-2}, ");
+            }
+
+            // Print toppings
+            Console.Write("Toppings: ");
+            foreach (var topping in iceCream.Toppings)
+            {
+                Console.Write($"{topping,-3}, ");
+            }
+
+            Console.Write("***"); // Separator between ice creams
+            Console.WriteLine("\n");
+            i++;
         }
     }
 }
@@ -419,7 +449,6 @@ void CreateIceCreamForOrder(Order order, Customer selected)
 
         Console.Write("Enter the number of scoops (1-3): ");
         int scoops = Convert.ToInt32(Console.ReadLine());
-
         List<Flavour> flavours = new List<Flavour>();
         Console.WriteLine("Available flavors:");
         foreach (var flavor in premiumFlavor.Keys)
@@ -528,39 +557,60 @@ string GetWaffleFlavorByChoice(int choice)
         default: return string.Empty;
     }
 }
-
-void OrderCSV()
+void Option6()
 {
-    string orderfile = "orders.csv";
-    using (StreamReader sr = new StreamReader(orderfile))
+    DisplayCus();
+    try
     {
-        string headerLine = sr.ReadLine();
-        while (!sr.EndOfStream)
+        Console.Write("Please select a Customer: ");
+        int select = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        Customer selected = CusList[select];
+        Console.WriteLine(selected);
+        Console.WriteLine("[1] Modify Ice Cream");
+        Console.WriteLine("[2] Add new Ice Cream to order");
+        Console.WriteLine("[3] Delete Ice Cream from order");
+        Console.Write("Please select your option: ");
+        int option = Convert.ToInt32(Console.ReadLine());
+
+        if (option == 1)
         {
-            string dataRow = sr.ReadLine();
-            string[] data = dataRow.Split(',');
-
-            int id = int.Parse(data[0]);
-            int memid = int.Parse(data[1]);
-            DateTime timeRec = DateTime.Parse(data[2]);
-            DateTime timeFul = DateTime.Parse(data[3]);
-            string option = data[4];
-            int scoops = int.Parse(data[5]);
-            string dip = data[6];
-            string wafflefla = data[7];
-            string fla1 = data[8];
-            string fla2 = data[9];
-            string fla3 = data[10];
-            string top1 = data[11];
-            string top2 = data[12];
-            string top3 = data[13];
-            string top4 = data[14];
-            Order order = new Order(id, timeRec);
-            OrdList.Add(order);
-
+            Console.Write("Please select ice cream to modify: ");
+            int index = Convert.ToInt32(Console.ReadLine());
+            displaycurrent(selected);
+            if (index > 0 && index <= selected.CurrentOrder.IceCreamList.Count)
+            {
+                selected.CurrentOrder.ModifyIceCream(index - 1);
+            }
+            else
+            {
+                Console.WriteLine("Invalid ice cream index.");
+            }
         }
-    }
+       else if (option == 2)
+        {
+            CreateCustomerOrder();
+        }
+        else if (option == 3)
+        {
+            Console.Write("Please select ice cream to delete: ");
+            int index = Convert.ToInt32(Console.ReadLine());
+            displaycurrent(selected);
+            if (index > 0 && index <= selected.CurrentOrder.IceCreamList.Count)
+            {
+                selected.CurrentOrder.DeleteIceCream(index - 1);
+            }
+            else
+            {
+                Console.WriteLine("Invalid ice cream index.");
+            }
+        }
 
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred: {ex.Message}, Please check the value entered");
+    }
 }
 
 while (true)
@@ -592,7 +642,7 @@ while (true)
     }
     else if (choice == "6")
     {
-
+        Option6();
     }
     else
     {
