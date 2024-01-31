@@ -9,14 +9,14 @@ namespace T02_Group12_PRG2Assignment
     class Order
     {
         public int Id {  get; set; }
-        public DateTime TimeRecieved {  get; set; }
+        public DateTime TimeReceived {  get; set; }
         public DateTime TimeFulfilled { get; set; }
         public List<IceCream> IceCreamList { get; set; } = new List<IceCream>();
         public Order() { }
-        public Order(int id, DateTime timeRecieved)
+        public Order(int id, DateTime timereceived)
         {
             Id = id;
-            TimeRecieved = timeRecieved;
+            TimeReceived = timereceived;
             IceCreamList = new List<IceCream>();
         }
         
@@ -50,7 +50,7 @@ namespace T02_Group12_PRG2Assignment
 
         public override string ToString()
         {
-            return $"Order: {Id}, Time Received: {TimeRecieved}, Time Fulfilled: {TimeFulfilled}, Total: {CalculateTotal()}";
+            return $"Order: {Id}, Time Received: {TimeReceived}, Time Fulfilled: {TimeFulfilled}, Total: {CalculateTotal()}";
         }
 
     }

@@ -28,7 +28,7 @@ namespace T02_Group12_PRG2Assignment
 
         public override string ToString()
         {
-            return $"Ice Cream Option: {Option}\nScoops: {Scoops}";
+            return $"IceCream Option: {Option}\nScoops: {Scoops}";
         }
 
     }

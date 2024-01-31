@@ -1,4 +1,5 @@
-﻿using T02_Group12_PRG2Assignment;
+﻿using System.Runtime.InteropServices;
+using T02_Group12_PRG2Assignment;
 List<Customer> CusList = new List<Customer>();
 List<Order> OrdList = new List<Order>();
 Queue<Order> regQueue = new Queue<Order>();
@@ -53,7 +54,7 @@ void option5Cus()
         Console.WriteLine();
     }
 }
-void DisplayOrd()
+/*void DisplayOrd()
 {
 
     Console.WriteLine($"{"ID",-20}{"Time Received",-10}");
@@ -65,7 +66,7 @@ void DisplayOrd()
         //Console.WriteLine(customer.Rewards.Tier);
         Console.WriteLine();
     }
-}
+}*/
 void AddCus()
 {
     string customerfile = "customers.csv";
@@ -120,10 +121,10 @@ void Option5()
     try
     {
         Console.Write("Please select a Customer: ");
-        int cus = Convert.ToInt32(Console.ReadLine()) -1;
+        int cus = Convert.ToInt32(Console.ReadLine()) - 1;
         int selectedCus;
         selectedCus = CusList[cus].MemberId;
-        Console.WriteLine( CusList[cus]);
+        Console.WriteLine(CusList[cus]);
         string orderfile = "orders.csv";
         using (StreamReader sr = new StreamReader(orderfile))
         {
@@ -141,53 +142,106 @@ void Option5()
                 int scoops = int.Parse(data[5]);
                 string dip = data[6];
                 string wafflefla = data[7];
-                List<Flavour> flavours = new List<Flavour>();
-                for (int i = 8; i < data.Length && i < 11; i++)
+
+
+
+                foreach (var item in CusList)
                 {
-                    string flavor = data[i];
-                    if (!string.IsNullOrEmpty(flavor))
+                    if (memid == item.MemberId)
                     {
-                        bool isPremium = CheckPremium(premiumFlavor, flavor);
-                        flavours.Add(new Flavour(flavor, isPremium, 1));
+                        List<Flavour> flavours = new List<Flavour>();
+                        for (int i = 8; i < data.Length && i < 11; i++)
+                        {
+                            string flavor = data[i];
+                            if (!string.IsNullOrEmpty(flavor))
+                            {
+                                bool isPremium = CheckPremium(premiumFlavor, flavor);
+                                flavours.Add(new Flavour(flavor, isPremium, 1));
+                            }
+                        }
+                        List<Topping> toppings = new List<Topping>();
+                        for (int i = 11; i < data.Length && i < 15; i++)
+                        {
+                            string topping = data[i];
+                            if (!string.IsNullOrEmpty(topping))
+                            {
+                                toppings.Add(new Topping(topping));
+                            }
+                        }
+                        IceCream iceCream;
+                        switch (option)
+                        {
+                            case "Waffle":
+                                iceCream = new Waffle(option, scoops, flavours, toppings, wafflefla);
+                                break;
+                            case "Cone":
+                                iceCream = new Cone(option, scoops, flavours, toppings, bool.Parse(dip));
+                                break;
+                            case "Cup":
+                                iceCream = new Cup(option, scoops, flavours, toppings);
+                                break;
+                            default:
+                                continue;
+                        }
+                        Order order = new Order(id, timeRec);
+                        order.TimeFulfilled = timeFul;
+                        order.AddIceCream(iceCream);
+                        item.OrderHistory.Add(order);
                     }
                 }
-                List<Topping> toppings = new List<Topping>();
-                for (int i = 11; i < data.Length && i < 15; i++)
+
+            }
+            if (CusList[cus].OrderHistory.Count != 0)
+            {
+                Console.WriteLine("Order History:");
+
+                foreach (var item in CusList[cus].OrderHistory)
                 {
-                    string topping = data[i];
-                    if (!string.IsNullOrEmpty(topping))
+                    //print Order
+                    Console.Write("***"); //separator between ice creams
+                    Console.Write($"Order ID:{item.Id} ");
+                    Console.Write($"Time Received:{item.TimeReceived,-22} ");
+                    Console.Write($"Time Fulfilled:{item.TimeFulfilled,-22} ");
+                    //print IceCream
+                    Console.Write("Ice Creams:");
+                    foreach (var iceCream in item.IceCreamList)
                     {
-                        toppings.Add(new Topping(topping));
+                        Console.Write($"{iceCream.Option,-8}");
+                        Console.Write("Scoops:");
+                        Console.Write($"{iceCream.Scoops,-5}");
+                        // Print flavors
+                        Console.Write("Flavours: ");
+                        foreach (var flavour in iceCream.Flavours)
+                        {
+                            Console.Write($"{flavour.Name,-2}, ");
+                        }
+
+                        // Print toppings
+                        foreach (var topping in iceCream.Toppings)
+                        {
+                            Console.Write($"{topping,-3} ");
+                        }
+
+                        Console.Write("***"); //separator between ice creams
                     }
+
+                    Console.WriteLine("\n");
                 }
-                IceCream iceCream;
-                switch (option)
-                {
-                    case "Waffle":
-                        iceCream = new Waffle(option, scoops, flavours, toppings, wafflefla);
-                        break;
-                    case "Cone":
-                        iceCream = new Cone(option, scoops, flavours, toppings, bool.Parse(dip));
-                        break;
-                    case "Cup":
-                        iceCream = new Cup(option, scoops, flavours, toppings);
-                        break;
-                    default:
-                        continue;
-                }
-                Order order = new Order(id, timeRec);
-                order.TimeFulfilled = timeFul;
-                order.AddIceCream(iceCream);
-                if(memid == selectedCus)
-                {
-                    CusList[cus].OrderHistory.Add(order);
-                }
+
             }
         }
+
     }
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
+    }
+    finally
+    {
+        foreach(var item in CusList)
+        {
+            item.OrderHistory.Clear();
+        }
     }
 }
 
