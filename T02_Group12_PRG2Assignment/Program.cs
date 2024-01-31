@@ -341,7 +341,110 @@ void CreateCustomerOrder()
 
 void CreateIceCreamForOrder(Order order)
 {
+    //which flavours are premium
+    Dictionary<string, bool> premiumFlavor = new Dictionary<string, bool>
+    {
+        { "Vanilla", false },
+        { "Chocolate", false },
+        { "Strawberry", false },
+        { "Durian", true },
+        { "Ube", true },
+        { "Sea salt", true }
+    };
 
+    Console.WriteLine("Available ice cream options: ");
+    Console.WriteLine("[1] Cup");
+    Console.WriteLine("[2] Cone");
+    Console.WriteLine("[3] Waffle");
+    Console.Write("Enter your choice: ");
+    string option = Console.ReadLine();
+
+    Console.Write("Enter the number of scoops (1-3): ");
+    int scoops = Convert.ToInt32(Console.ReadLine());
+
+    List<Flavour> flavours = new List<Flavour>();
+    Console.WriteLine("Available flavors:");
+    foreach (var flavor in premiumFlavor.Keys)
+    {
+        Console.WriteLine($"- {flavor}");
+    }
+
+    for (int i = 0; i < scoops; i++)
+    {
+        Console.Write($"Enter flavor for scoop #{i + 1}: ");
+        string flavorChoice = Console.ReadLine();
+        bool isPremium = premiumFlavor.TryGetValue(flavorChoice, out bool isPremiumFlavor);
+
+        flavours.Add(new Flavour(flavorChoice, isPremiumFlavor, 1));
+    }
+
+    List<Topping> toppings = new List<Topping>();
+    Console.WriteLine("Available toppings:");
+    Console.WriteLine("[1] Sprinkles");
+    Console.WriteLine("[2] Mochi");
+    Console.WriteLine("[3] Sago");
+    Console.WriteLine("[4] Oreos");
+
+    Console.Write("Enter toppings (comma-separated, e.g., 1,2): ");
+    string toppingsChoice = Console.ReadLine();
+    string[] selectedToppings = toppingsChoice.Split(',');
+
+    foreach (var toppingIndex in selectedToppings)
+    {
+        int index = Convert.ToInt32(toppingIndex);
+        string toppingName = GetToppingNameByIndex(index);
+        toppings.Add(new Topping(toppingName));
+    }
+
+    // Create the appropriate ice cream object based on the selected option
+    switch (option)
+    {
+        case "1": // Cup
+            order.AddIceCream(new Cup(option, scoops, flavours, toppings));
+            break;
+        case "2": // Cone
+            Console.Write("Would you like a chocolate-dipped cone? (Y/N): ");
+            bool isChocolateDipped = Console.ReadLine().ToUpper() == "Y";
+            order.AddIceCream(new Cone(option, scoops, flavours, toppings, isChocolateDipped));
+            break;
+        case "3": // Waffle
+            Console.WriteLine("Available waffle flavors:");
+            Console.WriteLine("[1] Red velvet");
+            Console.WriteLine("[2] Charcoal");
+            Console.WriteLine("[3] Pandan");
+            Console.Write("Enter waffle flavor choice (1-3): ");
+            int waffleFlavorChoice = Convert.ToInt32(Console.ReadLine());
+            string waffleFlavor = GetWaffleFlavorByChoice(waffleFlavorChoice);
+
+            order.AddIceCream(new Waffle(option, scoops, flavours, toppings, waffleFlavor));
+            break;
+        default:
+            Console.WriteLine("Invalid option");
+            break;
+    }
+}
+
+string GetToppingNameByIndex(int index)
+{
+    switch (index)
+    {
+        case 1: return "Sprinkles";
+        case 2: return "Mochi";
+        case 3: return "Sago";
+        case 4: return "Oreos";
+        default: return string.Empty;
+    }
+}
+
+string GetWaffleFlavorByChoice(int choice)
+{
+    switch (choice)
+    {
+        case 1: return "Red velvet";
+        case 2: return "Charcoal";
+        case 3: return "Pandan";
+        default: return string.Empty;
+    }
 }
 
 void OrderCSV()
