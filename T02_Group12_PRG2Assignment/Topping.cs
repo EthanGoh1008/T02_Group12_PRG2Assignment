@@ -18,7 +18,7 @@ namespace T02_Group12_PRG2Assignment
 
         public override string ToString()
         {
-            return $"Topping: {Name}";
+            return $"{Name}";
         }
     }
 }
