@@ -1,7 +1,16 @@
 ﻿using T02_Group12_PRG2Assignment;
 List<Customer> CusList = new List<Customer>();
 List<Order> OrdList = new List<Order>();
-List<Order> GoldOrdList = new List<Order>();
+Queue<Order> regQueue = new Queue<Order>();
+Queue<Order> goldQueue = new Queue<Order>();
+List<Order> OrdHistory = new List<Order>();
+
+
+
+
+//function to run first
+OrderCSV();
+AddCus();
 
 
 void DisplayMenu()
@@ -26,6 +35,20 @@ void DisplayCus()
     foreach (var customer in CusList)
     {
         Console.WriteLine($"{customer.Name,-20}{customer.MemberId,-10}{customer.Dob.ToShortDateString(),-15}");
+        //Console.WriteLine(customer.Rewards.Tier);
+        Console.WriteLine();
+    }
+}
+void option5Cus()
+{
+
+    Console.WriteLine($"{"Name",-20}{"Member ID",-10}{"Date of Birth",-15}");
+    Console.WriteLine(new string('-', 45));
+    int i = 0;
+    foreach (var customer in CusList)
+    {
+        i++;
+        Console.WriteLine($"{i} {customer.Name,-20}{customer.MemberId,-10}{customer.Dob.ToShortDateString(),-15}");
         //Console.WriteLine(customer.Rewards.Tier);
         Console.WriteLine();
     }
@@ -63,12 +86,141 @@ void AddCus()
 
             Customer customer = new Customer(name, memid, db);
             CusList.Add(customer);
-            customer.Rewards = new PointCard(point, punch, memstatus);
+            customer.Rewards = new PointCard(point, punch);
+            customer.Rewards.Tier = memstatus;
         }
     }
 }
+void Option5()
+{
+    // Mapping of premium flavors
+    Dictionary<string, bool> premiumFlavor = new Dictionary<string, bool>
+    {
+        { "Vanilla", false },
+        { "Chocolate", false },
+        { "Strawberry", false },
+        { "Durian", true },
+        { "Ube", true },
+        { "Sea salt", true }
+    };
+    bool CheckPremium(Dictionary<string, bool> premiumFlavor, string flavor)
+    {
+        // Check if the flavor is in the premium flavor mapping
+        if (premiumFlavor.TryGetValue(flavor, out bool isPremium))
+        {
+            return isPremium;
+        }
+        else
+        {
+            // Default to false if not found in the mapping (adjust as needed)
+            return false;
+        }
+    }
+    option5Cus();
+    try
+    {
+        Console.Write("Please select a Customer: ");
+        int cus = Convert.ToInt32(Console.ReadLine()) -1;
+        int selectedCus;
+        selectedCus = CusList[cus].MemberId;
+        Console.WriteLine( CusList[cus]);
+        string orderfile = "orders.csv";
+        using (StreamReader sr = new StreamReader(orderfile))
+        {
+            string headerLine = sr.ReadLine();
+            while (!sr.EndOfStream)
+            {
+                string dataRow = sr.ReadLine();
+                string[] data = dataRow.Split(',');
 
-void ListOrder()
+                int id = int.Parse(data[0]);
+                int memid = int.Parse(data[1]);
+                DateTime timeRec = DateTime.Parse(data[2]);
+                DateTime timeFul = DateTime.Parse(data[3]);
+                string option = data[4];
+                int scoops = int.Parse(data[5]);
+                string dip = data[6];
+                string wafflefla = data[7];
+                List<Flavour> flavours = new List<Flavour>();
+                for (int i = 8; i < data.Length && i < 11; i++)
+                {
+                    string flavor = data[i];
+                    if (!string.IsNullOrEmpty(flavor))
+                    {
+                        bool isPremium = CheckPremium(premiumFlavor, flavor);
+                        flavours.Add(new Flavour(flavor, isPremium, 1));
+                    }
+                }
+                List<Topping> toppings = new List<Topping>();
+                for (int i = 11; i < data.Length && i < 15; i++)
+                {
+                    string topping = data[i];
+                    if (!string.IsNullOrEmpty(topping))
+                    {
+                        toppings.Add(new Topping(topping));
+                    }
+                }
+                IceCream iceCream;
+                switch (option)
+                {
+                    case "Waffle":
+                        iceCream = new Waffle(option, scoops, flavours, toppings, wafflefla);
+                        break;
+                    case "Cone":
+                        iceCream = new Cone(option, scoops, flavours, toppings, bool.Parse(dip));
+                        break;
+                    case "Cup":
+                        iceCream = new Cup(option, scoops, flavours, toppings);
+                        break;
+                    default:
+                        continue;
+                }
+                Order order = new Order(id, timeRec);
+                order.TimeFulfilled = timeFul;
+                order.AddIceCream(iceCream);
+                if(memid == selectedCus)
+                {
+                    CusList[cus].OrderHistory.Add(order);
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+}
+
+void CheckQueue()
+{
+    Console.WriteLine("Gold Queue: ");
+    if (goldQueue.Count != 0)
+    {
+        foreach (var item in goldQueue)
+        {
+            Console.WriteLine(item);
+        }
+    }
+    else
+    {
+        Console.WriteLine("There is nothing inside the queue.");
+    }
+
+    Console.WriteLine("\nRegular Queue: ");
+    if (regQueue.Count != 0)
+    {
+        foreach (var item in regQueue)
+        {
+            Console.WriteLine(item);
+        }
+    }
+    else
+    {
+        Console.WriteLine("There is nothing inside the queue.");
+    }
+}
+
+void OrderCSV()
 {
     string orderfile = "orders.csv";
     using (StreamReader sr = new StreamReader(orderfile))
@@ -94,21 +246,18 @@ void ListOrder()
             string top2 = data[12];
             string top3 = data[13];
             string top4 = data[14];
-
-            Order order1 = new Order(id,timeRec);
-            OrdList.Add(order1);
-
+            Order order = new Order(id, timeRec);
+            OrdList.Add(order);
 
         }
     }
 
 }
-string choice;
+
 while (true)
 {
+    string choice;
     DisplayMenu();
-    ListOrder();
-    AddCus();
     Console.Write("Enter your option:");
     choice = Console.ReadLine();
     if (choice == "0") break;
@@ -118,7 +267,7 @@ while (true)
     }
     else if (choice == "2")
     {
-        DisplayOrd();   
+        CheckQueue();
     }
     else if (choice == "3")
     {
@@ -130,7 +279,7 @@ while (true)
     }
     else if (choice == "5")
     {
-
+        Option5();
     }
     else if (choice == "6")
     {
@@ -141,7 +290,7 @@ while (true)
         Console.WriteLine("Invalid input");
     }
 }
-
+/*
 private string CalculateTier()
 {
     if (Points >= 100)
@@ -157,3 +306,4 @@ private string CalculateTier()
         return "Ordinary";
     }
 }
+*/

@@ -17,6 +17,7 @@ namespace T02_Group12_PRG2Assignment
         {
             Id = id;
             TimeRecieved = timeRecieved;
+            IceCreamList = new List<IceCream>();
         }
         
         public void ModifyIceCream(int index, IceCream modifiedIceCream)

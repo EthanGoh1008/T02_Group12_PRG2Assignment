@@ -10,7 +10,7 @@ namespace T02_Group12_PRG2Assignment
     {
         private string WaffleFlavour;
 
-        public Waffle(string option, string waffleFlavour, int scoops, List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings)
+        public Waffle(string option, int scoops, List<Flavour> flavours, List<Topping> toppings ,string waffleFlavour) : base(option, scoops, flavours, toppings)
         {
             WaffleFlavour = waffleFlavour;
         }
